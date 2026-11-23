@@ -13,7 +13,7 @@ jobs:
   firmware:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/<owner>/arm-gcc:v0.1
+      image: ghcr.io/ptrodrigues/arm-gcc:v0.1
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
