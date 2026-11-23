@@ -1,0 +1,24 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "firmware",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "${sourceDir}/cmake/arm-none-eabi.cmake",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "MinSizeRel" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "firmware", "configurePreset": "firmware" }
+  ],
+  "workflowPresets": [
+    {
+      "name": "firmware",
+      "steps": [
+        { "type": "configure", "name": "firmware" },
+        { "type": "build", "name": "firmware" }
+      ]
+    }
+  ]
+}

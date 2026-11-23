@@ -1,0 +1,34 @@
+name: build
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  firmware:
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/<owner>/arm-gcc:v0.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: cmake --workflow --preset firmware
+
+      - name: Check vector table placement
+        run: arm-none-eabi-objdump -h build/firmware/blink.elf | grep -E '\.isr_vector +[0-9a-f]+ +08000000'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blink-f411re
+          path: |
+            build/firmware/blink.elf
+            build/firmware/blink.bin
